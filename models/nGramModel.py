@@ -107,9 +107,7 @@ class NGramModel(object):
         Modifies: nothing
         Effects:  returns the next note to be added to the "musical sentence".
                   For details on how to do this and how this will differ
-                  from the getNextToken function from the core, see the spec.
-
-                  Please note that this function is for the reach only.
+                  from getNextToken, see the spec.
         """
         pass
 
