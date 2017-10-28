@@ -10,9 +10,6 @@
 import sys
 sys.dont_write_bytecode = True
 
-# You may find this useful
-from string import ascii_lowercase as alphabet
-
 def returnDictionary(D):
     """
     Requires: Nothing
@@ -90,6 +87,8 @@ def asciiAssociate():
     >>> asciiAssociate() == {'a': 97, 'b': 98, 'c': 99, 'd': 100, 'e': 101, 'f': 102, 'g': 103, 'h': 104, 'i': 105, 'j': 106, 'k': 107, 'l': 108, 'm': 109, 'n': 110, 'o': 111, 'p': 112, 'q': 113, 'r': 114, 's': 115, 't': 116, 'u': 117, 'v': 118, 'w': 119, 'x': 120, 'y': 121, 'z': 122}
     True
     """
+    # You may find this useful
+    from string import ascii_lowercase as alphabet
     pass
 
 def getColor(favoriteColors, name):
@@ -178,6 +177,48 @@ def keysIn2D(D, L1, L2):
     True
     """
     pass
+
+class warmup(object):
+    """A simple class with methods to get you used to how python classes work."""
+
+    def makeBand(self):
+        """
+        Requires: nothing
+        Modifies: self
+        Effects: creates a self.bandName attribute and sets it to be 'The Beatles'
+        >>> w = warmup()
+        >>> w.makeBand()
+        >>> w.bandName
+        'The Beatles'
+        """
+        pass
+
+    def setAlbum(self, album):
+        """
+        Requires: album is a string value.
+        Modifies: self
+        Effects: sets the warmup's self.album attribute to be the album that gets
+                 passed in.
+        >>> w = warmup()
+        >>> w.setAlbum("Abbey Road")
+        >>> w.album
+        'Abbey Road'
+        """
+        pass
+
+    def printAlbum(self):
+        """
+        Requires: nothing
+        Modifies: nothing
+        Effects: returns <the band's album> + " by " + <the band's name>
+        >>> w = warmup()
+        >>> w.makeBand()
+        >>> w.setAlbum('Twist and Shout')
+        >>> w.printAlbum()
+        'Twist and Shout by The Beatles'
+        """
+        pass
+
 
 ###############################################################################
 # Main
