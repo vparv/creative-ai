@@ -19,10 +19,18 @@ class NGramModel(object):
         """
         Requires: nothing
         Modifies: nothing
-        Effects:  returns the string to print when you call print on an
-                  NGramModel object. This function is done for you.
+        Effects:  Returns the string to print when you call print on an
+                  NGramModel object. This string will be formatted in JSON
+                  and display the currently trained dataset.
+                  This function is done for you.
         """
-        return self.__class__.__name__
+        return self.__class__.__name__ + ':\n' +\
+            json.dumps(
+                       self.nGramCounts,
+                       sort_keys=True,
+                       indent=4,
+                       separators=(',', ': ')
+            )
 
     def prepData(self, text):
         """
@@ -120,3 +128,4 @@ if __name__ == '__main__':
     text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
     choices = { 'the': 2, 'quick': 1, 'brown': 1 }
     nGramModel = NGramModel()
+    print(nGramModel)

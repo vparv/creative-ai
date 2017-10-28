@@ -63,5 +63,6 @@ if __name__ == '__main__':
     text.append([ 'quick', 'brown' ])
     sentence = [ 'lazy', 'quick' ]
     bigramModel = BigramModel()
+    print(bigramModel)
 
 

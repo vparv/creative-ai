@@ -60,3 +60,4 @@ if __name__ == '__main__':
     text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
     sentence = [ 'brown' ]
     unigramModel = UnigramModel()
+    print(unigramModel)
