@@ -1,5 +1,5 @@
 ################################################################################
-# The following 12 functions are stubbed for you. You must pass all of our test
+# The following functions are stubbed for you. You must pass all of our test
 # cases for these functions as part of the core. To run your functions with our
 # test cases, run this file as main. This file uses python's doctest module,
 # which will run your implementations against the test cases contained in each
