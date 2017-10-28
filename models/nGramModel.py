@@ -1,5 +1,6 @@
 import random
 import sys
+import json
 from musicInfo import *
 
 class NGramModel(object):
