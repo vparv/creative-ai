@@ -174,6 +174,8 @@ def keysIn2D(D, L1, L2):
     >>> keysIn2D({}, ['in', 'xanadu'], ['did', 'kubla khan'])
     False
     >>> keysIn2D({'xanadu': 'kubla khan'}, ['in', 'xanadu'], ['did', 'kubla khan'])
+    False
+    >>> keysIn2D({'in': {'xanadu': 'kubla khan'}}, ['in', 'xanadu'], ['did', 'kubla khan'])
     True
     """
     pass
