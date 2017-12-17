@@ -173,7 +173,7 @@ def keysIn2D(D, L1, L2):
               item of list L2 as a key.
     >>> keysIn2D({}, ['in', 'xanadu'], ['did', 'kubla khan'])
     False
-    >>> keysIn2D({'xanadu': 'kubla khan'}, ['in', 'xanadu'], ['did', 'kubla khan'])
+    >>> keysIn2D({'xanadu': 'did'}, ['in', 'xanadu'], ['did', 'kubla khan'])
     False
     >>> keysIn2D({'in': {'xanadu': 'kubla khan'}}, ['in', 'xanadu'], ['did', 'kubla khan'])
     True
