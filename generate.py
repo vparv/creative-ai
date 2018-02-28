@@ -163,24 +163,35 @@ def main():
 
               It prompts the user to choose to generate either lyrics or music.
     """
-    # FIXME uncomment these lines when ready
-    # print('Starting program and loading data...')
-    # lyricsModels = trainLyricsModels(LYRICSDIRS)
-    # musicModels = trainMusicModels(MUSICDIRS)
-    # print('Data successfully loaded')
+	
+	# FIXME uncomment these lines when ready
+    '''lyricsTrained = False
+    musicTrained = False'''
 
     print('Welcome to the ' + TEAM + ' music generator!')
     while True:
         try:
             userInput = int(raw_input(PROMPT))
             if userInput == 1:
-                # FIXME uncomment this line when ready
-                # runLyricsGenerator(lyricsModels)
+                # FIXME uncomment these lines when ready
+                '''if not lyricsTrained:
+                	print('Starting lyrics generator and loading data...')
+                	lyricsModels = trainLyricsModels(LYRICSDIRS)
+                	print('Data successfully loaded')
+                	lyricsTrained = True
+
+                runLyricsGenerator(lyricsModels)'''
                 print("Under construction")
             elif userInput == 2:
                 # FIXME uncomment these lines when ready
-                # songName = raw_input('What would you like to name your song? ')
-                # runMusicGenerator(musicModels, WAVDIR + songName + '.wav')
+                '''if not musicTrained:
+                	#print('Starting music generator and loading data...')
+                	#musicModels = trainMusicModels(MUSICDIRS)
+                	#print('Data successfully loaded')
+                	#musicTrained = True
+
+                #songName = raw_input('What would you like to name your song? ')
+                #runMusicGenerator(musicModels, WAVDIR + songName + '.wav')'''
                 print("Under construction")
             elif userInput == 3:
                 print('Thank you for using the ' + TEAM + ' music generator!')
