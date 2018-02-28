@@ -165,8 +165,8 @@ def main():
     """
 	
 	# FIXME uncomment these lines when ready
-    '''lyricsTrained = False
-    musicTrained = False'''
+    #lyricsTrained = False
+    #musicTrained = False
 
     print('Welcome to the ' + TEAM + ' music generator!')
     while True:
@@ -185,13 +185,13 @@ def main():
             elif userInput == 2:
                 # FIXME uncomment these lines when ready
                 '''if not musicTrained:
-                	#print('Starting music generator and loading data...')
-                	#musicModels = trainMusicModels(MUSICDIRS)
-                	#print('Data successfully loaded')
-                	#musicTrained = True
+                	print('Starting music generator and loading data...')
+                	musicModels = trainMusicModels(MUSICDIRS)
+                	print('Data successfully loaded')
+                	musicTrained = True
 
-                #songName = raw_input('What would you like to name your song? ')
-                #runMusicGenerator(musicModels, WAVDIR + songName + '.wav')'''
+                songName = raw_input('What would you like to name your song? ')
+                runMusicGenerator(musicModels, WAVDIR + songName + '.wav')'''
                 print("Under construction")
             elif userInput == 3:
                 print('Thank you for using the ' + TEAM + ' music generator!')
