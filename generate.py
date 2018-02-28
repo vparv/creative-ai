@@ -173,7 +173,7 @@ def main():
         try:
             userInput = int(raw_input(PROMPT))
             if userInput == 1:
-                # FIXME uncomment these lines when ready
+                # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not lyricsTrained:
                 	print('Starting lyrics generator and loading data...')
                 	lyricsModels = trainLyricsModels(LYRICSDIRS)
@@ -183,7 +183,7 @@ def main():
                 runLyricsGenerator(lyricsModels)'''
                 print("Under construction")
             elif userInput == 2:
-                # FIXME uncomment these lines when ready
+                # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not musicTrained:
                 	print('Starting music generator and loading data...')
                 	musicModels = trainMusicModels(MUSICDIRS)
