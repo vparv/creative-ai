@@ -17,8 +17,8 @@ def returnDictionary(D):
     Effects:  Returns the input dictionary D unchanged.
     >>> returnDictionary({})
     {}
-    >>> coleridge = {'in': 'xanadu', 'did': 'kubla khan'}
-    >>> returnDictionary(coleridge) == {'in': 'xanadu', 'did': 'kubla khan'}
+    >>> lyrics = {'a': 'hard', 'days': 'night'}
+    >>> returnDictionary(lyrics) == {'a': 'hard', 'days': 'night'}
     True
     """
     pass
@@ -28,12 +28,13 @@ def keyInDict(D, K):
     Requires: D is a dictionary
     Modifies: Nothing
     Effects:  Returns True if and only if the key K is already in D.
-    >>> keyInDict({}, 'xanadu')
+              Hint: use the 'in' operator
+    >>> keyInDict({}, 'night')
     False
-    >>> coleridge = {'in': 'xanadu', 'did': 'kubla khan'}
-    >>> keyInDict(coleridge, 'in')
+    >>> lyrics = {'a': 'hard', 'days': 'night'}
+    >>> keyInDict(lyrics, 'days')
     True
-    >>> keyInDict(coleridge, 'decree')
+    >>> keyInDict(lyrics, 'postman')
     False
     """
     pass
@@ -43,10 +44,10 @@ def returnKeyVal(D, K):
     Requires: D is a dictionary and K is a key in D
     Modifies: Nothing
     Effects:  Returns the value associated with K in the dictionary D.
-    >>> coleridge = {'a': 'stately', 'pleasure': 'dome', 'decree': {}}
-    >>> returnKeyVal(coleridge, 'a')
-    'stately'
-    >>> returnKeyVal(coleridge, 'decree')
+    >>> lyrics = {'wait': 'a', 'minute': 'mister', 'postman': {}}
+    >>> returnKeyVal(lyrics, 'wait')
+    'a'
+    >>> returnKeyVal(lyrics, 'postman')
     {}
     """
     pass
@@ -57,9 +58,9 @@ def setKeyVal(D, K, V):
     Modifies: D
     Effects:  Sets the value associated with the key K in the dictionary D
               to be the value V. Returns the dictionary D.
-    >>> setKeyVal({}, 'where alph', 'the sacred river ran') == {'where alph': 'the sacred river ran'}
+    >>> setKeyVal({}, 'all the', 'lonely people') == {'all the': 'lonely people'}
     True
-    >>> setKeyVal({'through': 'caverns'}, 'measureless', 'to man') == {'through': 'caverns', 'measureless': 'to man'}
+    >>> setKeyVal({'where do': 'they all'}, 'come', 'from') == {'where do': 'they all', 'come': 'from'}
     True
     """
     pass
@@ -71,7 +72,7 @@ def setKeyValList(D, K, V1, V2, V3, V4):
     Effects:  Sets the value associated with the key K, which is a key in
               the input dictionary D, to be a list composed of V1 through
               V4, in that order. Returns the dictionary D.
-    >>> setKeyValList({}, 'down', 'to', 'a', 'sunless', 'sea') == {'down': ['to', 'a', 'sunless', 'sea']}
+    >>> setKeyValList({}, 'taxman', 'cause', 'im', 'the', 'taxman') == {'taxman': ['cause', 'im', 'the', 'taxman']}
     True
     """
     pass
@@ -91,18 +92,32 @@ def asciiAssociate():
     from string import ascii_lowercase as alphabet
     pass
 
-def getColor(favoriteColors, name):
+def nestedAscii():
     """
-    Requires: favoriteColors is a dictionary, name is a key in
-              favoriteColors, and the value associated with name is a non-empty
+    Requires: Nothing
+    Modifies: Nothing
+    Effects:  Creates a new dictionary, D, where its keys are the
+              lowercase characters from a to z, and each key has a value
+              of an empty dictionary. Returns the new dictionary D.
+    >>> nestedAscii() == {'a': {}, 'b': {}, 'c': {}, 'd': {}, 'e': {}, 'f': {}, 'g': {}, 'h': {}, 'i': {}, 'j': {}, 'k': {}, 'l': {}, 'm': {}, 'n': {}, 'o': {}, 'p': {}, 'q': {}, 'r': {}, 's': {}, 't': {}, 'u': {}, 'v': {}, 'w': {}, 'x': {}, 'y': {}, 'z': {}}
+    True
+    """
+    # You may find this useful
+    from string import ascii_lowercase as alphabet
+    pass
+
+def getNote(song, note):
+    """
+    Requires: song is a dictionary, note is a key in
+              song, and the value associated with note is a non-empty
               list
     Modifies: Nothing
     Effects:  Returns the first element in the list associated with the
               key "name" in the input dictionary favoriteColors.
-    >>> getColor({'Kubla': ['gold', 'silver']}, 'Kubla')
-    'gold'
-    >>> getColor({'Coleridge': ['green']}, 'Coleridge')
-    'green'
+    >>> getNote({'start': ['c4']}, 'start')
+    'c4'
+    >>> getNote({'backbeat': ['e1', 'g1']}, 'backbeat')
+    'e1'
     """
     pass
 
@@ -122,18 +137,6 @@ def translate(vocab, word, language):
     """
     pass
 
-def nestedDictionary():
-    """
-    Requires: Nothing
-    Modifies: Nothing
-    Effects:  Creates a new dictionary, D, where its keys are the
-              lowercase characters from a to z, and each key has a value
-              of an empty dictionary. Returns the new dictionary D.
-    >>> nestedDictionary() == {'a': {}, 'b': {}, 'c': {}, 'd': {}, 'e': {}, 'f': {}, 'g': {}, 'h': {}, 'i': {}, 'j': {}, 'k': {}, 'l': {}, 'm': {}, 'n': {}, 'o': {}, 'p': {}, 'q': {}, 'r': {}, 's': {}, 't': {}, 'u': {}, 'v': {}, 'w': {}, 'x': {}, 'y': {}, 'z': {}}
-    True
-    """
-    pass
-
 def nestedDictionary3D(L1, L2):
     """
     Requires: L1 and L2 are lists
@@ -142,10 +145,12 @@ def nestedDictionary3D(L1, L2):
               The value for each key in D is a dictionary, which
               has keys of each item of list L2 and corresponding
               values of empty dictionaries. Returns the new dictionary D.
-    >>> nestedDictionary3D(['coleridge'], ['kubla khan', 'christabel']) == {'coleridge': {'kubla khan': {}, 'christabel': {}}}
-    True
-    >>> nestedDictionary3D(['dolphin', 'panda'], ['diet', 'habitat']) == {'dolphin': {'diet': {}, 'habitat': {}}, 'panda': {'diet': {}, 'habitat': {}}}
-    True
+    >>> nestedDictionary3D(['abbey road'], ['come together', 'because'])
+    {'abbey road': {'come together': {}, 'because': {}}}
+    >>> albums = ['help', 'revolver']
+    >>> attributes = ['sales', 'songs']
+    >>> nestedDictionary3D(albums, attributes)
+    {'help': {'sales': {}, 'songs': {}}, 'revolver': {'sales': {}, 'songs': {}}}
     """
     pass
 
@@ -158,8 +163,10 @@ def valueFrom3D(D, K1, K2, K3):
     Effects:  Given the 3D input dictionary D, returns the value associated
               with the innermost dictionary accessed using keys K1, K2, and K3,
               in that order.
-    >>> valueFrom3D({'singing': {'of': {'mount': 'abora'}}}, 'singing', 'of', 'mount')
-    'abora'
+    >>> valueFrom3D({'any': {'time': {'at': 'all'}}}, 'any', 'time', 'at')
+    'all'
+    >>> valueFrom3D({'twist': {'and': {'shout': 5}}}, 'twist', 'and', 'shout')
+    5
     """
     pass
 
@@ -171,11 +178,11 @@ def keysIn2D(D, L1, L2):
               if the last item of list L1 is a key in D, and that key
               is associated with a dictionary that contains the last
               item of list L2 as a key.
-    >>> keysIn2D({}, ['in', 'xanadu'], ['did', 'kubla khan'])
+    >>> D = {'d#2': {'e3': 'ab3'}}
+    >>> keysIn2D(D, ['c4', 'f#6'], ['ab3', 'd5', 'e3'])
     False
-    >>> keysIn2D({'xanadu': 'did'}, ['in', 'xanadu'], ['did', 'kubla khan'])
-    False
-    >>> keysIn2D({'in': {'xanadu': 'kubla khan'}}, ['in', 'xanadu'], ['did', 'kubla khan'])
+    >>> D = {'f#6': {'e3': 5}}
+    >>> keysIn2D(D, ['c4', 'f#6'], ['ab3', 'd5', 'e3'])
     True
     """
     pass
