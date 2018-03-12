@@ -39,6 +39,8 @@ def printSongLyrics(verseOne, verseTwo, chorus):
     Effects:  prints the song. This function is done for you.
     """
     verses = [verseOne, chorus, verseTwo, chorus]
+    print("RANDOMLY GENERATED SONG by " + TEAM)
+    print("*" * 40)
     print
     for verse in verses:
         for line in verse:
@@ -163,8 +165,8 @@ def main():
 
               It prompts the user to choose to generate either lyrics or music.
     """
-	
-	# FIXME uncomment these lines when ready
+        
+        # FIXME uncomment these lines when ready
     #lyricsTrained = False
     #musicTrained = False
 
@@ -175,20 +177,20 @@ def main():
             if userInput == 1:
                 # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not lyricsTrained:
-                	print('Starting lyrics generator and loading data...')
-                	lyricsModels = trainLyricsModels(LYRICSDIRS)
-                	print('Data successfully loaded')
-                	lyricsTrained = True
+                        print('Starting lyrics generator and loading data...')
+                        lyricsModels = trainLyricsModels(LYRICSDIRS)
+                        print('Data successfully loaded')
+                        lyricsTrained = True
 
                 runLyricsGenerator(lyricsModels)'''
                 print("Under construction")
             elif userInput == 2:
                 # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not musicTrained:
-                	print('Starting music generator and loading data...')
-                	musicModels = trainMusicModels(MUSICDIRS)
-                	print('Data successfully loaded')
-                	musicTrained = True
+                        print('Starting music generator and loading data...')
+                        musicModels = trainMusicModels(MUSICDIRS)
+                        print('Data successfully loaded')
+                        musicTrained = True
 
                 songName = raw_input('What would you like to name your song? ')
                 runMusicGenerator(musicModels, WAVDIR + songName + '.wav')'''
