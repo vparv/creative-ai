@@ -3,6 +3,7 @@ import sys
 sys.dont_write_bytecode = True # Suppress .pyc files
 
 import random
+
 from pysynth import pysynth
 from data.dataLoader import *
 from models.musicInfo import *
@@ -13,12 +14,26 @@ from models.trigramModel import *
 # FIXME Add your team name
 TEAM = 'YOUR NAME HERE'
 LYRICSDIRS = ['the_beatles']
+TESTLYRICSDIRS = ['the_beatles_test']
 MUSICDIRS = ['gamecube']
 WAVDIR = 'wav/'
 
 ###############################################################################
 # Helper Functions
 ###############################################################################
+"""
+    Requires: nothing
+    Modifies: nothing
+    Effects:  outputs the dictionary val to the given filename. Used 
+              in Test mode. This function has been done for you.
+    """
+def output_models(val, output_fn = None):
+    from pprint import pprint
+    if output_fn == None:
+        print("No Filename Given")
+        return
+    with open('TEST_OUTPUT/' + output_fn, 'wt') as out:
+        pprint(val, stream=out)
 
 def sentenceTooLong(desiredLength, currentLength):
     """
@@ -47,7 +62,7 @@ def printSongLyrics(verseOne, verseTwo, chorus):
             print (' '.join(line)).capitalize()
         print
 
-def trainLyricModels(lyricDirs):
+def trainLyricModels(lyricDirs, test=False):
     """
     Requires: lyricDirs is a list of directories in data/lyrics/
     Modifies: nothing
@@ -61,7 +76,7 @@ def trainLyricModels(lyricDirs):
     """
     models = [TrigramModel(), BigramModel(), UnigramModel()]
     for ldir in lyricDirs:
-        lyrics = dataLoader.loadLyrics(ldir)
+        lyrics = loadLyrics(ldir)
         for model in models:
             model.trainModel(lyrics)
     return models
@@ -164,11 +179,24 @@ def main():
               entire generator program for both the reach and the core.
 
               It prompts the user to choose to generate either lyrics or music.
-    """
-        
-        # FIXME uncomment these lines when ready
+    """ 
+    # FIXME uncomment these lines when ready
     #lyricsTrained = False
     #musicTrained = False
+
+    if len(sys.argv) == 2:
+        if sys.argv[1] == "--test":
+            print("TEST MODE")
+            testLyricsModels = trainLyricModels(TESTLYRICSDIRS)
+            trigram = testLyricsModels[0].nGramCounts
+            bigram = testLyricsModels[1].nGramCounts
+            unigram = testLyricsModels[2].nGramCounts
+            output_models(unigram, output_fn = "unigram_student.txt")
+            output_models(bigram, output_fn = "bigram_student.txt")
+            output_models(trigram, output_fn = "trigram_student.txt")
+            print('Student models have been written to the TEST_OUTPUT folder')
+            sys.exit()
+
 
     print('Welcome to the ' + TEAM + ' music generator!')
     while True:
@@ -177,20 +205,20 @@ def main():
             if userInput == 1:
                 # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not lyricsTrained:
-                        print('Starting lyrics generator and loading data...')
-                        lyricsModels = trainLyricsModels(LYRICSDIRS)
-                        print('Data successfully loaded')
-                        lyricsTrained = True
+                    print('Starting lyrics generator and loading data...')
+                    lyricsModels = trainLyricsModels(LYRICSDIRS)
+                    print('Data successfully loaded')
+                    lyricsTrained = True
 
                 runLyricsGenerator(lyricsModels)'''
                 print("Under construction")
             elif userInput == 2:
                 # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not musicTrained:
-                        print('Starting music generator and loading data...')
-                        musicModels = trainMusicModels(MUSICDIRS)
-                        print('Data successfully loaded')
-                        musicTrained = True
+                    print('Starting music generator and loading data...')
+                    musicModels = trainMusicModels(MUSICDIRS)
+                    print('Data successfully loaded')
+                    musicTrained = True
 
                 songName = raw_input('What would you like to name your song? ')
                 runMusicGenerator(musicModels, WAVDIR + songName + '.wav')'''
