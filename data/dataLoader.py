@@ -173,7 +173,7 @@ def formatDuration(asciiDuration):
         duration = 2
     elif duration < 4:
         duration = -2
-    else:
+    else: # default
         duration = 1
 
     return duration
