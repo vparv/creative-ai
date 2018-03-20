@@ -3,6 +3,18 @@ import os
 import re
 import string
 
+def prepData(text):
+    """
+    Returns a copy of text where each inner list starts with the special symbols
+    '^::^' and '^:::^', and ends with the symbol '$:::$'.
+    >>> prepData(['hello', 'goodbye'])
+    ['^::^', '^:::^', 'hello', 'goodbye', '$:::$]
+    """
+    textCopy = []
+    for line in text:
+	textCopy.append(['^::^', '^:::^'] + line + ['$:::$'])
+    return textCopy
+
 def loadLyrics(dirName):
     """
     Loads the lyrics files from the directory specified by dirName,
@@ -30,7 +42,9 @@ def loadLyrics(dirName):
             line = line.lower().strip()
             if line:
                 lyrics.append(line.split())
-    return lyrics
+
+    # Add special tokens and return
+    return prepData(lyrics)
 
 def loadMusic(dirName):
     """
@@ -75,7 +89,9 @@ def loadMusic(dirName):
 
         if song:
             songs.append(song)
-    return songs
+
+    # Add special tokens and return
+    return prepData(songs)
 
 def formatPitch(asciiPitch):
     """

@@ -22,11 +22,6 @@ class UnigramModel(NGramModel):
                   which is a dictionary of {string: integer} pairs.
                   For further explanation of UnigramModel's version of
                   self.nGramCounts, see the spec.
-
-                  Note: make sure to use the return value of prepData to
-                  populate the dictionary, which will allow the special
-                  symbols to be included as their own tokens in
-                  self.nGramCounts. For more details, see the spec.
         """
         pass
 

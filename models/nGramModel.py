@@ -33,22 +33,6 @@ class NGramModel(object):
                        separators=(',', ': ')
             )
 
-    def prepData(self, text):
-        """
-        Requires: text is a list of lists of strings
-        Modifies: nothing
-        Effects:  returns a copy of text where each inner list starts with
-                  the symbols '^::^' and '^:::^', and ends with the symbol
-                  '$:::$'. For example, if an inner list in text were
-                  ['hello', 'goodbye'], that list would become
-                  ['^::^', '^:::^', 'hello', 'goodbye', '$:::$'] in the
-                  returned copy.
-        """
-        textCopy = []
-        for line in text:
-            textCopy.append(['^::^', '^:::^'] + line + ['$:::$'])
-        return textCopy
-
     def trainModel(self, text):
         """
         Requires: text is a list of lists of strings

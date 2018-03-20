@@ -23,11 +23,6 @@ class TrigramModel(NGramModel):
                   which has strings as keys and dictionaries as values,
                   where those inner dictionaries have strings as keys
                   and dictionaries of {string: integer} pairs as values.
-
-                  Note: make sure to use the return value of prepData to
-                  populate the dictionary, which will allow the special
-                  symbols to be included as their own tokens in
-                  self.nGramCounts. For more details, see the spec.
         """
         pass
 
