@@ -21,13 +21,14 @@ WAVDIR = 'wav/'
 ###############################################################################
 # Helper Functions
 ###############################################################################
-"""
+
+def output_models(val, output_fn = None):
+    """
     Requires: nothing
     Modifies: nothing
-    Effects:  outputs the dictionary val to the given filename. Used 
+    Effects:  outputs the dictionary val to the given filename. Used
               in Test mode. This function has been done for you.
     """
-def output_models(val, output_fn = None):
     from pprint import pprint
     if output_fn == None:
         print("No Filename Given")
@@ -71,7 +72,6 @@ def trainLyricModels(lyricDirs, test=False):
               instance of each of the NGramModel child classes and trains
               them using the text loaded from the data loader. The list
               should be in tri-, then bi-, then unigramModel order.
-
               Returns the list of trained models.
     """
     models = [TrigramModel(), BigramModel(), UnigramModel()]
@@ -89,7 +89,6 @@ def trainMusicModels(musicDirs):
     """
     Requires: lyricDirs is a list of directories in data/midi/
     Modifies: nothing
-
     Effects:  works exactly as trainLyricsModels, except that
               now the dataLoader calls the DataLoader's loadMusic() function
               and takes a music directory name instead of an artist name.
@@ -98,7 +97,6 @@ def trainMusicModels(musicDirs):
     """
     models = [TrigramModel(), BigramModel(), UnigramModel()]
     # call dataLoader.loadMusic for each directory in musicDirs
-
     pass
 
 def selectNGramModel(models, sentence):
@@ -157,7 +155,8 @@ def runMusicGenerator(models, songName):
     """
     Requires: models is a list of trained models
     Modifies: nothing
-    Effects:  runs the music generator as following the details in the spec.
+    Effects:  uses models to generate a song and write it to the file
+              named songName.wav
     """
     pass
 
@@ -179,7 +178,7 @@ def main():
               entire generator program for both the reach and the core.
 
               It prompts the user to choose to generate either lyrics or music.
-    """ 
+    """
     # FIXME uncomment these lines when ready
     #lyricsTrained = False
     #musicTrained = False
@@ -231,6 +230,7 @@ def main():
         except ValueError:
             print("Please enter a number")
 
+# This is how python tells if the file is being run as main
 if __name__ == '__main__':
     main()
     # note that if you want to individually test functions from this file,
