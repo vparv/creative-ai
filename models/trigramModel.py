@@ -53,10 +53,5 @@ class TrigramModel(NGramModel):
 ###############################################################################
 
 if __name__ == '__main__':
-    # Add your tests here
-    text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
-    sentence = [ 'the', 'quick', 'brown' ]
-    trigramModel = TrigramModel()
-    print(trigramModel)
-
-
+    # Add your test cases here
+    pass

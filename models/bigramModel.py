@@ -54,10 +54,4 @@ class BigramModel(NGramModel):
 
 if __name__ == '__main__':
     # Add your test cases here
-    text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
-    text.append([ 'quick', 'brown' ])
-    sentence = [ 'lazy', 'quick' ]
-    bigramModel = BigramModel()
-    print(bigramModel)
-
-
+    pass

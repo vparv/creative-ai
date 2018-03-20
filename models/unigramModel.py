@@ -37,7 +37,7 @@ class UnigramModel(NGramModel):
 
     def getCandidateDictionary(self, sentence):
         """
-        Requires: sentence is a list of strings, and trainingDataHasNgGram
+        Requires: sentence is a list of strings, and trainingDataHasNGram
                   has returned True for this particular language model
         Modifies: nothing
         Effects:  returns the dictionary of candidate next words to be added
@@ -50,9 +50,24 @@ class UnigramModel(NGramModel):
 # Main
 ###############################################################################
 
+# This is the code python runs when unigramModel.py is run as main
 if __name__ == '__main__':
-    # Add your test cases here
-    text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
-    sentence = [ 'brown' ]
-    unigramModel = UnigramModel()
-    print(unigramModel)
+
+    # An example trainModel test case
+    uni = UnigramModel()
+    text = [ [ 'brown' ] ]
+    uni.trainModel(text)
+    # Should print: { 'brown' : 1 }
+    print(uni)
+
+    text = [ ['the', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
+    uni.trainModel(text)
+    # Should print: { 'brown': 2, 'dog': 1, 'fox': 1, 'lazy': 1, 'the': 2 }
+    print(uni)
+
+    # An example trainingDataHasNGram test case
+    uni = UnigramModel()
+    sentence = "Eagles fly in the sky"
+    print(uni.trainingDataHasNGram(sentence)) # should be False
+    uni.trainModel(text)
+    print(uni.trainingDataHasNGram(sentence)) # should be True
