@@ -12,7 +12,7 @@ def prepData(text):
     """
     textCopy = []
     for line in text:
-	textCopy.append(['^::^', '^:::^'] + line + ['$:::$'])
+        textCopy.append(['^::^', '^:::^'] + line + ['$:::$'])
     return textCopy
 
 def loadLyrics(dirName):
@@ -161,17 +161,17 @@ def formatDuration(asciiDuration):
 
     if duration < 0.5:
         duration = 16
-    elif duration >= 0.5 and duration < .75:
+    elif duration < .75:
         duration = -8
-    elif duration >= 0.75 and duration < 1:
+    elif duration < 1:
         duration = 8
-    elif duration >= 1 and duration < 1.5:
+    elif duration < 1.5:
         duration = 4
-    elif duration >= 1.5 and duration < 2:
+    elif duration < 2:
         duration = -4
-    elif duration >= 2 and duration < 3:
+    elif duration < 3:
         duration = 2
-    elif duration >= 3 and duration < 4:
+    elif duration < 4:
         duration = -2
     else:
         duration = 1
