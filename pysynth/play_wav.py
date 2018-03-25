@@ -26,7 +26,7 @@ except ImportError:
 			import pyglet
 			pygletFound = True
 		except ImportError:
-			print "Audio playback frameworks not found. Install one of pyaudio, tkSnack or pyglet."
+			print("Audio playback frameworks not found. Install one of pyaudio, tkSnack or pyglet.")
 
 class Sound:
 	def __init__(self, fn = None):
@@ -66,7 +66,7 @@ class Sound:
 		data = wf.readframes(chunk)
 
 		# play stream
-		while data != '':
+		while data != b'':
 			stream.write(data)
 			data = wf.readframes(chunk)
 

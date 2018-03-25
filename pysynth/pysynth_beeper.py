@@ -46,7 +46,7 @@ def make_wav(song, tempo=120, transpose=0, fn="out.wav"):
         asin = lambda x: math.sin(2. * math.pi * x)
         
         period_waveform = []
-        for x in xrange(period):
+        for x in range(period):
             # Position inside current period, 0..1            
             pos = float(x) / period
             
@@ -65,10 +65,10 @@ def make_wav(song, tempo=120, transpose=0, fn="out.wav"):
             period_waveform.append(level)
             #period_waveform_packed.append(sixteenbit(level))    
     
-        return period_waveform, "".join(sixteenbit(l) for l in period_waveform)
+        return period_waveform, b"".join(sixteenbit(l) for l in period_waveform)
     
     def beep(freq, duration, sink):
-        ow = ""
+        ow = b""
 
         period = int(SAMPLING_RATE / 4 / freq)
         period_waveform, period_waveform_packed = beep_single_period(period)

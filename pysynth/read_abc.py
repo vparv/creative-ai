@@ -5,7 +5,7 @@ Parse a file in ABC music notation format and render with PySynth.
 
 Usage:
 
-read_abc.py filename [num_song] [--syn_b/--syn_s/--syn_e]
+read_abc.py filename [num_song] [--syn_b/--syn_c/--syn_d/--syn_e/--syn_p/--syn_s/--syn_samp]
 
 * num_song selects the song in the file corresponding to the number given
 * --syn_b and --syn_s can be added to use the PySynth B or PySynth S
@@ -16,7 +16,11 @@ Some of the definitions are borrowed from PlayABC 1.1
 2012-07-17
 """
 
-import sys, urllib2
+import sys
+if sys.version >= '3':
+	import urllib.request, urllib.error, urllib.parse
+else:
+	import urllib2
 
 sel = False
 try: num = int(sys.argv[2])
@@ -29,6 +33,14 @@ elif "--syn_s" in sys.argv:
 	import pysynth_s as pysynth
 elif "--syn_e" in sys.argv:
 	import pysynth_e as pysynth
+elif "--syn_c" in sys.argv:
+	import pysynth_c as pysynth
+elif "--syn_d" in sys.argv:
+	import pysynth_d as pysynth
+elif "--syn_p" in sys.argv:
+	import pysynth_p as pysynth
+elif "--syn_samp" in sys.argv:
+	import pysynth_samp as pysynth
 else:
 	import pysynth
 
@@ -200,7 +212,7 @@ def add_note(a, n):
 		if triplet:
 			leng *= tripfac
 			triplet -= 1
-		if note[0].lower() == 'z':
+		if note[0].lower() == 'z' or note[0].lower() == 'x':
 			note = 'r'
 			song += [["%s" % note, leng]]
 			if not only_first:
@@ -257,8 +269,11 @@ def get_bpm(s, u = "1/4"):
 		return int(b) * 4. * float(c) / float(d)
 
 fn = sys.argv[1]
-if fn[:5] == 'http:':
-	f = urllib2.urlopen(fn)
+if fn[:5] == 'http:' or fn[:6] == 'https:':
+	if sys.version >= '3':
+		f = urllib.request.urlopen(fn).read().decode('utf-8').splitlines(keepends=True)
+	else:
+		f = urllib2.urlopen(fn)
 else:
 	f = open(fn)
 
@@ -269,7 +284,7 @@ nunit   = "1/4"
 unit    = 4
 
 for l in f:
-	if l[0] in ('w', 'W', '%'): continue
+	if not l or l[0] in ('w', 'W', '%'): continue
 	if 'X:' in l:
 		sn = int(l.split(':')[1])
 		if sn == num:
@@ -290,11 +305,11 @@ for l in f:
 			if x.lower() == key.lower() or y.lower() == key.lower():
 				fsnum = z
 		if fsnum < 0:
-			fsrange = range(fsnum, 0)
+			fsrange = list(range(fsnum, 0))
 			sign = -1
 			piano = piano_f
 		else:
-			fsrange = range(1, fsnum + 1)
+			fsrange = list(range(1, fsnum + 1))
 			sign = 1
 			piano = piano_s
 		for fs in fsrange:
@@ -311,17 +326,16 @@ for l in f:
 
 if do_repeat:
 	song = song + second_ver
-f.close()
 
 if not sel:
-	print
-	print "*** Song %u not found in file %s!" % (num, fn)
-	print
+	print()
+	print("*** Song %u not found in file %s!" % (num, fn))
+	print()
 else:
-	print key, unit
-	print song
-	print
-	print len(song)
+	print(key, unit)
+	print(song)
+	print()
+	print(len(song))
 
 	pysynth.make_wav(song, bpm = bpm)
 

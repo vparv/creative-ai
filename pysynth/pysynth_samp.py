@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
-#print "*** KARPLUS-STRONG STRING ***"
-
 """
 ##########################################################################
 #                       * * *  PySynth  * * *
 #       A very basic audio synthesizer in Python (www.python.org)
 #
-#          Martin C. Doege, 2009-06-13 (mdoege@compuserve.com)
+#          Martin C. Doege, 2017-06-25 (mdoege@compuserve.com)
 ##########################################################################
 # Based on a program by Tyler Eaves (tyler at tylereaves.com) found at
 #   http://mail.python.org/pipermail/python-list/2000-August/041308.html
@@ -30,35 +28,24 @@
 # 5.33 = -8 = dotted eighth
 """
 
+from __future__ import division
+
 import wave, struct
 import numpy as np
-from math import sin, cos, pi, log, exp, floor, ceil
+from math import sin, cos, pi, log, exp
 from mixfiles import mix_files
 from demosongs import *
-from mkfreq import getfreq
+from mkfreq import getfreq, getfn
 
 pitchhz, keynum = getfreq()
 
-def linint(arr, x):
-	"Interpolate an (X, Y) array linearly."
-	for v in arr:
-		if v[0] == x: return v[1]
-	xvals = [v[0] for v in arr]
-	ux = max(xvals)
-	lx = min(xvals)
-	try: assert lx <= x <= ux
-	except:
-		#print lx, x, ux
-		raise
-	for v in arr:
-		if v[0] > x and v[0] - x <= ux - x:
-			ux = v[0]
-			uy = v[1]
-		if v[0] < x and x - v[0] >= lx - x:
-			lx = v[0]
-			ly = v[1]		
-	#print lx, ly, ux, uy
-	return (float(x) - lx) / (ux - lx) * (uy - ly) + ly
+# get filenames for sample layer 10:
+fnames = getfn(10)
+
+# path to Salamander piano samples (http://freepats.zenvoid.org/Piano/acoustic-grand-piano.html),
+#       48 kHz version:
+patchpath = "/usr/share/sounds/SalamanderGrandPianoV3_48khz24bit/48khz24bit/"
+
 
 ##########################################################################
 #### Main program starts below
@@ -71,8 +58,8 @@ def linint(arr, x):
 # Octave shift (neg. integer -> lower; pos. integer -> higher)
 # e.g. transpose = 0
 
-# Pause between notes as a fraction (0. = legato and e.g., 0.5 = staccato)
-# e.g. pause = 0.05
+# Playing style (e.g., 0.8 = very legato and e.g., 0.3 = very staccato)
+# e.g. leg_stac = 0.6
 
 # Volume boost for asterisk notes (1. = no boost)
 # e.g. boost = 1.2
@@ -80,63 +67,64 @@ def linint(arr, x):
 # Output file name
 #fn = 'pysynth_output.wav'
 
-data = []
+##########################################################################
 
-def make_wav(song,bpm=120,transpose=0,pause=0.,boost=1.1,repeat=0,fn="out.wav",silent=False):
+def make_wav(song,bpm=120,transpose=0,leg_stac=.9,boost=1.1,repeat=0,fn="out.wav", silent=False):
 	f=wave.open(fn,'w')
 
 	f.setnchannels(1)
 	f.setsampwidth(2)
-	f.setframerate(44100)
+	f.setframerate(48000)
 	f.setcomptype('NONE','Not Compressed')
 
 	bpmfac = 120./bpm
 
 	def length(l):
-	    return 88200./l*bpmfac
+	    return 96000./l*bpmfac
 
-	def waves2(hz,l):
-	    a=44100./hz
-	    b=float(l)/44100.*hz
-	    return [a,round(b)]
+	def getval(v):
+		a = struct.unpack('i', v + b'\x00')[0] / 256 - 32768
+		if a > 0:
+			a =  1 - a / 32768
+		else:
+			a = -1 - a / 32768
+		return(a)
 
-	def asin(x):
-	    return sin(2.*pi*x)
+	def render2(a, b, vol, pos, knum, note):
+		snd_len = int(b)
 
-	def render2(a, b, vol, pos, knum, note, endamp = .25, sm = 10):
-		b2 = (1. - pause) * b
-		l=waves2(a, b2)
-		ow=b''
-		q=int(l[0]*l[1])
+		wf = wave.open(patchpath + fnames[knum][0], "rb")
+		wl = wf.getnframes()
+		wd = wf.readframes(wl)
+		new = np.zeros(wl // 6)
 
-		lf = log(a)
-		t = (lf-3.) / (8.5-3.)
-		volfac = 1. + .8 * t * cos(pi/5.3*(lf-3.))
-		snd_len = int((10.-lf)*q)
-		if lf < 4: snd_len *= 2
-		x = np.arange(snd_len)
-		s = x / float(q)
+		for x in range(wl // 6):
+			#left: getval( wd[6 * x:6 * x +3] )
+			#right: getval( wd[6 * x + 3:6 * x +6] )
+			new[x] = getval( wd[6 * x:6 * x +3] )
 
-		ls = np.log(1. + s)
-		kp_len = int(l[0])
-		kps1 = np.zeros(snd_len)
-		kps2 = np.zeros(snd_len)
-		kps1[:kp_len] = np.random.normal(size = kp_len)
+		wf.close()
 
-		for t in range(kp_len):
-			kps2[t] = kps1[t:t+sm].mean()
-		delt = float(l[0])
-		li = int(floor(delt))
-		hi = int(ceil(delt))
-		ifac = delt % 1
-		delt2 = delt * (floor(delt) - 1) / floor(delt)
-		ifac2 = delt2 % 1
-		falloff = (4./lf*endamp)**(1./l[1])
-		for t in range(hi, snd_len):
-			v1 = ifac * kps2[t-hi]   + (1.-ifac) * kps2[t-li]
-			v2 = ifac2 * kps2[t-hi+1] + (1.-ifac2) * kps2[t-li+1]
-			kps2[t] += .5 * (v1 + v2) * falloff
-		data[pos:pos+snd_len] += kps2*vol*volfac
+		f = fnames[knum][1]
+		# Salamander samples every third piano key, so other notes
+		# are created by playing these samples faster (with linear interpolation):
+		if f > 1:
+			f2 = int(len(new) / f)
+			new2 = np.zeros(f2)
+			for x in range(f2):
+				q = x * f - int(x * f)
+				new2[x] = (1 - q) * new[int(x * f)] + q * new[int(x * f) + 1]
+		else:
+			new2 = new
+		raw_note = len(new2)
+
+		dec_ind = int(leg_stac*b)
+		new2[dec_ind:] *= np.exp(-np.arange(raw_note-dec_ind)/3000.)
+		new2[-1001:] *= np.arange(1, -.001,-.001)
+		if snd_len > raw_note:
+			print("Warning, note too long:", snd_len, raw_note)
+			snd_len = raw_note
+		data[pos:pos+snd_len] += ( new2[:snd_len] * vol  )
 
 	ex_pos = 0.
 	t_len = 0
@@ -145,8 +133,11 @@ def make_wav(song,bpm=120,transpose=0,pause=0.,boost=1.1,repeat=0,fn="out.wav",s
 			t_len+=length(-2.*x/3.)
 		else:
 			t_len+=length(x)
-	data = np.zeros(int((repeat+1)*t_len + 20 * 44100))
-	#print len(data)/44100., "s allocated"
+		if y[-1] == '*':
+			y = y[:-1]
+		if not y[-1].isdigit():
+			y += '4'
+	data = np.zeros(int((repeat+1)*t_len + 480000))
 
 	for rp in range(repeat+1):
 		for nn, x in enumerate(song):
@@ -183,7 +174,7 @@ def make_wav(song,bpm=120,transpose=0,pause=0.,boost=1.1,repeat=0,fn="out.wav",s
 		print("Writing to file", fn)
 
 	data = data / (data.max() * 2.)
-	out_len = int(2. * 44100. + ex_pos+.5)
+	out_len = int(2. * 48000. + ex_pos+.5)
 	data2 = np.zeros(out_len, np.short)
 	data2[:] = 32000. * data[:out_len]
 	f.writeframes(data2.tostring())
@@ -195,17 +186,19 @@ def make_wav(song,bpm=120,transpose=0,pause=0.,boost=1.1,repeat=0,fn="out.wav",s
 ##########################################################################
 
 if __name__ == '__main__':
-	print("*** KARPLUS-STRONG STRING ***")
+	print("*** SAMPLER ***")
 	print()
-	print("Creating Demo Songs... (this might take a few minutes)")
+	print("Creating Demo Songs... (this might take about a minute)")
 	print()
 
-	#make_wav((('c2', 4), ('e2', 4), ('g2', 4), ('c3', 1)))
-	#make_wav(song1, fn = "pysynth_scale.wav")
+	#make_wav((('c', 4), ('e', 4), ('g', 4), ('c5', 1)))
+	make_wav(song1, fn = "pysynth_scale.wav")
 	#make_wav((('c1', 1), ('r', 1),('c2', 1), ('r', 1),('c3', 1), ('r', 1), ('c4', 1), ('r', 1),('c5', 1), ('r', 1),('c6', 1), ('r', 1),('c7', 1), ('r', 1),('c8', 1), ('r', 1), ('r', 1), ('r', 1), ('c4', 1),('r', 1), ('c4*', 1), ('r', 1), ('r', 1), ('r', 1), ('c4', 16), ('r', 1), ('c4', 8), ('r', 1),('c4', 4), ('r', 1),('c4', 1), ('r', 1),('c4', 1), ('r', 1)), fn = "all_cs.wav")
+
 	make_wav(song4_rh, bpm = 130, transpose = 1, boost = 1.15, repeat = 1, fn = "pysynth_bach_rh.wav")
 	make_wav(song4_lh, bpm = 130, transpose = 1, boost = 1.15, repeat = 1, fn = "pysynth_bach_lh.wav")
 	mix_files("pysynth_bach_rh.wav", "pysynth_bach_lh.wav", "pysynth_bach.wav")
 
-	#make_wav(song3, bpm = 132/2, pause = 0., boost = 1.1, fn = "pysynth_chopin.wav")
-	#make_wav(song2, bpm = 95, boost = 1.2, fn = "pysynth_anthem.wav")
+	#make_wav(song3, bpm = 132/2, leg_stac = 0.9, boost = 1.1, fn = "pysynth_chopin.wav")
+
+
