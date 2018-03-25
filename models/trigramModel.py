@@ -3,16 +3,6 @@ from nGramModel import *
 
 class TrigramModel(NGramModel):
 
-    def __init__(self):
-        """
-        Requires: nothing
-        Modifies: self (this instance of the NGramModel object)
-        Effects:  this is the TrigramModel constructor, which is done
-                  for you. It allows TrigramModel to access the data
-                  from the NGramModel class.
-        """
-        super(TrigramModel, self).__init__()
-
     def trainModel(self, text):
         """
         Requires: text is a list of lists of strings

@@ -4,17 +4,6 @@ from nGramModel import *
 
 class BigramModel(NGramModel):
 
-    def __init__(self):
-        """
-        Requires: nothing
-        Modifies: self (this instance of the BigramModel object)
-        Effects:  this is the BigramModel constructor, which is done
-                  for you. It allows BigramModel to access the data
-                  from the NGramModel class by calling the NGramModel
-                  constructor.
-        """
-        super(BigramModel, self).__init__()
-
     def trainModel(self, text):
         """
         Requires: text is a list of lists of strings

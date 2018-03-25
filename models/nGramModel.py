@@ -10,9 +10,7 @@ class NGramModel(object):
         Requires: nothing
         Modifies: self (this instance of the NGramModel object)
         Effects:  This is the NGramModel constructor. It sets up an empty
-                  dictionary as a member variable. It is called from the
-                  constructors of the NGramModel child classes. This
-                  function is done for you.
+                  dictionary as a member variable.
         """
         self.nGramCounts = {}
 
@@ -25,13 +23,25 @@ class NGramModel(object):
                   and display the currently trained dataset.
                   This function is done for you.
         """
-        return self.__class__.__name__ + ':\n' +\
-            json.dumps(
-                       self.nGramCounts,
-                       sort_keys=True,
-                       indent=4,
-                       separators=(',', ': ')
+        printed_string = self.__class__.__name__ + ':\n'
+
+        try:
+            printed_string = printed_string + json.dumps(
+                self.nGramCounts,
+                sort_keys=True,
+                indent=4,
+                separators=(',', ': ')
             )
+        except:
+            printed_string = printed_string + json.dumps(
+                repr(self.nGramCounts),
+                sort_keys=True,
+                indent=4,
+                separators=(',', ': ')
+            )
+
+
+        return printed_string
 
     def trainModel(self, text):
         """

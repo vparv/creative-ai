@@ -3,17 +3,6 @@ from nGramModel import *
 
 class UnigramModel(NGramModel):
 
-    def __init__(self):
-        """
-        Requires: nothing
-        Modifies: self (this instance of the UnigramModel object)
-        Effects:  this is the UnigramModel constructor, which is done
-                  for you. It allows UnigramModel to access the data
-                  in the NGramModel class by calling the NGramModel
-                  constructor.
-        """
-        super(UnigramModel, self).__init__()
-
     def trainModel(self, text):
         """
         Requires: text is a list of lists of strings
