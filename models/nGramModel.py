@@ -45,7 +45,7 @@ class NGramModel(object):
 
     def trainModel(self, text):
         """
-        Requires: text is a list of lists of strings
+        Requires: text is a list of lists of tokens
         Modifies: self.nGramCounts
         Effects:  this function populates the self.nGramCounts dictionary.
                   It does not need to be modified here because you will
@@ -56,7 +56,7 @@ class NGramModel(object):
 
     def trainingDataHasNGram(self, sentence):
         """
-        Requires: sentence is a list of strings, and trainingDataHasNGram
+        Requires: sentence is a list of tokens, and trainingDataHasNGram
                   has returned True for this particular language model
         Modifies: nothing
         Effects:  returns a bool indicating whether or not this n-gram model
@@ -69,7 +69,7 @@ class NGramModel(object):
 
     def getCandidateDictionary(self, sentence):
         """
-        Requires: sentence is a list of strings
+        Requires: sentence is a list of tokens
         Modifies: nothing
         Effects:  returns the dictionary of candidate next words to be added
                   to the current sentence. This function does not need to be
@@ -90,7 +90,7 @@ class NGramModel(object):
 
     def getNextToken(self, sentence):
         """
-        Requires: sentence is a list of strings, and this model can be used to
+        Requires: sentence is a list of tokens, and this model can be used to
                   choose the next token for the current sentence
         Modifies: nothing
         Effects:  returns the next token to be added to sentence by calling

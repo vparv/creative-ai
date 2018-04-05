@@ -6,19 +6,19 @@ class BigramModel(NGramModel):
 
     def trainModel(self, text):
         """
-        Requires: text is a list of lists of strings
+        Requires: text is a list of lists of tokens
         Modifies: self.nGramCounts, a two-dimensional dictionary. For examples
                   and pictures of the BigramModel's version of
                   self.nGramCounts, see the spec.
         Effects:  this function populates the self.nGramCounts dictionary,
-                  which has strings as keys and dictionaries of
-                  {string: integer} pairs as values.
+                  which has tokens as keys and dictionaries of
+                  {token: integer} pairs as values.
         """
         pass
 
     def trainingDataHasNGram(self, sentence):
         """
-        Requires: sentence is a list of strings, and len(sentence) >= 1
+        Requires: sentence is a list of tokens, and len(sentence) >= 1
         Modifies: nothing
         Effects:  returns True if this n-gram model can be used to choose
                   the next token for the sentence. For explanations of how this
@@ -28,7 +28,7 @@ class BigramModel(NGramModel):
 
     def getCandidateDictionary(self, sentence):
         """
-        Requires: sentence is a list of strings, and trainingDataHasNGram
+        Requires: sentence is a list of tokens, and trainingDataHasNGram
                   has returned True for this particular language model
         Modifies: nothing
         Effects:  returns the dictionary of candidate next words to be added

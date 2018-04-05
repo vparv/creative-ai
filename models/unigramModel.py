@@ -5,10 +5,10 @@ class UnigramModel(NGramModel):
 
     def trainModel(self, text):
         """
-        Requires: text is a list of lists of strings
+        Requires: text is a list of lists of tokens
         Modifies: self.nGramCounts
         Effects:  this function populates the self.nGramCounts dictionary,
-                  which is a dictionary of {string: integer} pairs.
+                  which is a dictionary of {token: integer} pairs.
                   For further explanation of UnigramModel's version of
                   self.nGramCounts, see the spec.
         """
@@ -16,7 +16,7 @@ class UnigramModel(NGramModel):
 
     def trainingDataHasNGram(self, sentence):
         """
-        Requires: sentence is a list of strings
+        Requires: sentence is a list of tokens
         Modifies: nothing
         Effects:  returns True if this n-gram model can be used to choose
                   the next token for the sentence. For explanations of how this
@@ -26,7 +26,7 @@ class UnigramModel(NGramModel):
 
     def getCandidateDictionary(self, sentence):
         """
-        Requires: sentence is a list of strings, and trainingDataHasNGram
+        Requires: sentence is a list of tokens, and trainingDataHasNGram
                   has returned True for this particular language model
         Modifies: nothing
         Effects:  returns the dictionary of candidate next words to be added
