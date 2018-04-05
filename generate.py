@@ -89,7 +89,7 @@ def trainMusicModels(musicDirs):
     """
     Requires: lyricDirs is a list of directories in data/midi/
     Modifies: nothing
-    Effects:  works exactly as trainLyricsModels, except that
+    Effects:  works exactly as trainLyricModels, except that
               now the dataLoader calls the DataLoader's loadMusic() function
               and takes a music directory name instead of an artist name.
               Returns a list of trained models in order of tri-, then bi-, then
@@ -205,7 +205,7 @@ def main():
                 # FIXME uncomment these lines when ready AND comment out "Under construction"
                 '''if not lyricsTrained:
                     print('Starting lyrics generator and loading data...')
-                    lyricsModels = trainLyricsModels(LYRICSDIRS)
+                    lyricsModels = trainLyricModels(LYRICSDIRS)
                     print('Data successfully loaded')
                     lyricsTrained = True
 
