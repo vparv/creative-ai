@@ -42,11 +42,12 @@ class UnigramModel():
         """
         for member1 in text:
             for member2 in member1:
-                #do not consider ^::^ and ^:::^
                 if "^::^" in self.nGramCounts:
                     del self.nGramCounts["^::^"]
                 if "^:::^" in self.nGramCounts:
                     del self.nGramCounts["^:::^"]
+                if "$:::$" in self.nGramCounts:
+                    del self.nGramCounts["$:::$"]
 
                 if member2 in self.nGramCounts:
                     self.nGramCounts[member2] += 1

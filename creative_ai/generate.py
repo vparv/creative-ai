@@ -165,8 +165,7 @@ def generateTokenSentence(model, desiredLength):
     """
     sentence = []
     nextWord = model.getNextToken(sentence)
-    while((not sentenceTooLong(desiredLength, len(sentence))) and \
-            (nextWord != "$:::$")):
+    while((not sentenceTooLong(desiredLength, len(sentence))) and (nextWord != "$:::$")):
         if nextWord == "^::^" or nextWord == "^:::^":
             nextWord = model.getNextToken(sentence)
         else:
