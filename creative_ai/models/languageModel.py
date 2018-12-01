@@ -13,7 +13,7 @@ class LanguageModel():
         Modifies: self (this instance of the LanguageModel object)
         Effects:  This is the LanguageModel constructor. It sets up an empty
                   dictionary as a member variable.
-        
+
         This function is done for you.
         """
 
@@ -31,7 +31,7 @@ class LanguageModel():
                   It will show the number of trained paths
                   for each model it contains. It may be
                   useful for testing.
-        
+
         This function is done for you.
         """
 
@@ -79,7 +79,12 @@ class LanguageModel():
                   (Remember that you wrote a function that checks if a model can
                   be used to pick a word for a sentence!)
         """
-        pass
+        if self.models[0].trainingDataHasNGram(sentence):
+            return self.models[0]
+        elif self.models[1].trainingDataHasNGram(sentence):
+            return self.models[1]
+        else:
+            return self.models[2]
 
     def weightedChoice(self, candidates):
         """
@@ -89,7 +94,23 @@ class LanguageModel():
         Effects:  returns a candidate item (a key in the candidates dictionary)
                   based on the algorithm described in the spec.
         """
-        pass
+        tokenList = []
+        valueList = []
+        for i in candidates:
+            tokenList.append(i)
+            valueList.append(candidates[i])
+
+        cumList = []
+        cumList.append(valueList[0])
+        for i in range(1, len(valueList)):
+            cumList.append(cumList[i - 1] + valueList[i])
+
+        randInt = random.randrange(0, cumList[-1])
+        count = 0
+        for i in cumList:
+            if cumList[count] > randInt:
+                return tokenList[count]
+            count += 1
 
 
     def getNextToken(self, sentence, filter=None):
@@ -106,7 +127,17 @@ class LanguageModel():
                   can produce a next token using the filter, then a random
                   token from the filter is returned instead.
         """
-        pass
+        if filter == None:
+            return self.weightedChoice(self.selectNGramModel(sentence).getCandidateDictionary(sentence))
+        else:
+            filteredCandidates = {}
+            candidateDict = self.getCandidateDictionary(sentence)
+            for key, value in candidateDict.items():
+                if key in filter:
+                    filteredCandidates[key] = value
+            if filteredCandidates == {}:
+                return random.choice(filter)
+
 
 ###############################################################################
 # End Core
@@ -117,4 +148,16 @@ class LanguageModel():
 ###############################################################################
 
 if __name__ == '__main__':
-    # test cases here
+    lModel = LanguageModel()
+    myDict = {'north': 4, 'south': 1, 'east': 3, 'west': 2}
+    #print(lModel.weightedChoice(myDict))
+
+    sent = ['This', 'is', 'a', 'big', 'test']
+    lModel = selectNGramModel(sent)
+
+
+    text = [ ['the', 'brown', 'fox'], ['the', 'very', 'lazy', 'dog'] ]
+    lModel.trainModel(text)
+    print(lModel.getNextToken(sent))
+
+    #print(lModel.models)

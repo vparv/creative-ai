@@ -21,7 +21,7 @@ class UnigramModel():
         Effects:  Returns the string to print when you call print on an
                   NGramModel object. This string will be formatted in JSON
                   and display the currently trained dataset.
-        
+
         This function is done for you.
         """
 
@@ -40,7 +40,19 @@ class UnigramModel():
                   For further explanation of UnigramModel's version of
                   self.nGramCounts, see the spec.
         """
-        pass
+        for member1 in text:
+            for member2 in member1:
+                if "^::^" in self.nGramCounts:
+                    del self.nGramCounts["^::^"]
+                if "^:::^" in self.nGramCounts:
+                    del self.nGramCounts["^:::^"]
+                if "$:::$" in self.nGramCounts:
+                    del self.nGramCounts["$:::$"]
+
+                if member2 in self.nGramCounts:
+                    self.nGramCounts[member2] += 1
+                else:
+                    self.nGramCounts[member2] = 1
 
     def trainingDataHasNGram(self, sentence):
         """
@@ -50,7 +62,9 @@ class UnigramModel():
                   the next token for the sentence. For explanations of how this
                   is determined for the UnigramModel, see the spec.
         """
-        pass
+        if len(self.nGramCounts) != 0:
+            return True
+        return False
 
     def getCandidateDictionary(self, sentence):
         """
@@ -61,7 +75,7 @@ class UnigramModel():
                   to the current sentence. For details on which words the
                   UnigramModel sees as candidates, see the spec.
         """
-        pass
+        return self.nGramCounts
 
 ###############################################################################
 # End Core
@@ -92,3 +106,6 @@ if __name__ == '__main__':
     print(uni.trainingDataHasNGram(sentence)) # should be False
     uni.trainModel(text)
     print(uni.trainingDataHasNGram(sentence)) # should be True
+
+    # getCandidateDictionary test case
+    print(uni.getCandidateDictionary(text))

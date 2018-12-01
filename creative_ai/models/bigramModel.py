@@ -8,7 +8,7 @@ class BigramModel():
         Modifies: self (this instance of the NGramModel object)
         Effects:  This is the NGramModel constructor. It sets up an empty
                   dictionary as a member variable.
-        
+
         This function is done for you.
         """
         self.nGramCounts = {}
@@ -20,7 +20,7 @@ class BigramModel():
         Effects:  Returns the string to print when you call print on an
                   NGramModel object. This string will be formatted in JSON
                   and display the currently trained dataset.
-        
+
         This function is done for you.
         """
 
@@ -41,7 +41,16 @@ class BigramModel():
                   which has strings as keys and dictionaries of
                   {string: integer} pairs as values.
         """
-        pass
+        for list in text:
+            for count in range(len(list) - 1):
+                if list[count] not in self.nGramCounts:
+                    self.nGramCounts[list[count]] = {list[count + 1]: 1}
+                else:
+                    if list[count + 1] in self.nGramCounts[list[count]]:
+                        self.nGramCounts[list[count]][list[count + 1]] += 1
+                    else:
+                        self.nGramCounts[list[count]][list[count + 1]] = 1
+
 
     def trainingDataHasNGram(self, sentence):
         """
@@ -51,7 +60,11 @@ class BigramModel():
                   the next token for the sentence. For explanations of how this
                   is determined for the BigramModel, see the spec.
         """
-        pass
+        if not sentence:
+            return False
+        if sentence[-1] in self.nGramCounts:
+            return True
+        return False
 
     def getCandidateDictionary(self, sentence):
         """
@@ -62,7 +75,7 @@ class BigramModel():
                   to the current sentence. For details on which words the
                   BigramModel sees as candidates, see the spec.
         """
-        pass
+        return self.nGramCounts[sentence[-1]]
 
 ###############################################################################
 # End Core
@@ -73,4 +86,7 @@ class BigramModel():
 ###############################################################################
 
 if __name__ == '__main__':
-    # Add your test cases here
+    bi = BigramModel()
+    text = [['This', 'is', 'a', 'test'], ['This', 'is', 'a', 'big', 'test']]
+    bi.trainModel(text)
+    print(bi)
