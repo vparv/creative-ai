@@ -46,6 +46,8 @@ class UnigramModel():
                     del self.nGramCounts["^::^"]
                 if "^:::^" in self.nGramCounts:
                     del self.nGramCounts["^:::^"]
+                if "$:::$" in self.nGramCounts:
+                    del self.nGramCounts["$:::$"]
 
                 if member2 in self.nGramCounts:
                     self.nGramCounts[member2] += 1
