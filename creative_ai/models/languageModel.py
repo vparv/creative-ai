@@ -79,6 +79,7 @@ class LanguageModel():
                   (Remember that you wrote a function that checks if a model can
                   be used to pick a word for a sentence!)
         """
+        #selects appropriate training model
         if self.models[0].trainingDataHasNGram(sentence):
             return self.models[0]
         elif self.models[1].trainingDataHasNGram(sentence):
@@ -94,17 +95,20 @@ class LanguageModel():
         Effects:  returns a candidate item (a key in the candidates dictionary)
                   based on the algorithm described in the spec.
         """
+        #enters keys and values of candidates dictionary into respective lists
         tokenList = []
         valueList = []
         for i in candidates:
             tokenList.append(i)
             valueList.append(candidates[i])
 
+        #makes cummulative list
         cumList = []
         cumList.append(valueList[0])
         for i in range(1, len(valueList)):
             cumList.append(cumList[i - 1] + valueList[i])
 
+        #get random number
         randInt = random.randrange(0, cumList[-1])
         count = 0
         for i in cumList:
@@ -127,14 +131,19 @@ class LanguageModel():
                   can produce a next token using the filter, then a random
                   token from the filter is returned instead.
         """
+        #returns next token to be added
         if filter == None:
-            return self.weightedChoice(self.selectNGramModel(sentence).getCandidateDictionary(sentence))
+            return (self.weightedChoice(self.selectNGramModel(sentence)
+                .getCandidateDictionary(sentence)))
         else:
             filteredCandidates = {}
             candidateDict = self.getCandidateDictionary(sentence)
             for key, value in candidateDict.items():
+                #checks if key is in filtered list
                 if key in filter:
                     filteredCandidates[key] = value
+                    return value
+            #returns random item in filter
             if filteredCandidates == {}:
                 return random.choice(filter)
 
