@@ -45,16 +45,16 @@ class TrigramModel():
         """
         for list in text:
             for count in range(2, len(list)):
-                if list[count - 2] in self.nGramCounts:
-                    if list[count - 1] in self.nGramCounts[list[count - 2]]:
+                if list[count - 2] not in self.nGramCounts:
+                    self.nGramCounts[list[count - 2]] = {list[count - 1]: {list[count]: 1}}
+                else:
+                    if list[count - 1] not in self.nGramCounts[list[count - 2]]:
+                        self.nGramCounts[list[count - 2]][list[count - 1]] = {list[count]: 1}
+                    else:
                         if list[count] in self.nGramCounts[list[count - 2]][list[count - 1]]:
                             self.nGramCounts[list[count - 2]][list[count - 1]][list[count]] += 1
                         else:
                             self.nGramCounts[list[count - 2]][list[count - 1]][list[count]] = 1
-                    else:
-                        self.nGramCounts[list[count - 2]][list[count - 1]] = {list[count]: 1}
-                else:
-                    self.nGramCounts[list[count - 2]] = {list[count - 1]: {list[count]: 1}}
 
 
     def trainingDataHasNGram(self, sentence):
