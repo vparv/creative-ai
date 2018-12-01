@@ -164,8 +164,13 @@ def generateTokenSentence(model, desiredLength):
               NGramModels, see the spec.
     """
     sentence = []
-    while((not sentenceTooLong(desiredLength, len(sentence))) and (model.getNextToken(sentence) != "$:::$")):
-        sentence.append(model.getNextToken(sentence))
+    nextWord = model.getNextToken(sentence)
+    while((not sentenceTooLong(desiredLength, len(sentence))) and (nextWord != "$:::$")):
+        if nextWord == "^::^" or nextWord == "^:::^":
+            nextWord = model.getNextToken(sentence)
+        else:
+            sentence.append(nextWord)
+            nextWord = model.getNextToken(sentence)
     return sentence
 
 ###############################################################################
