@@ -142,8 +142,7 @@ class LanguageModel():
                 #checks if key is in filtered list
                 if key in filter:
                     filteredCandidates[key] = value
-                    return value
-            #returns random item in filter
+            #returns random item from filter
             if filteredCandidates == {}:
                 return random.choice(filter)
 
