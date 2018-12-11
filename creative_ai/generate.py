@@ -63,7 +63,7 @@ def printSongLyrics(verseOne, verseTwo, chorus):
             print((' '.join(line)).capitalize())
         print()
 
-def trainLyricModels(lyricDirs, lyricsOrGrammar, test=False):
+def trainLyricModels(lyricDirs, test=False):
     """
     Requires: lyricDirs is a list of directories in data/lyrics/
     Modifies: nothing
@@ -77,20 +77,12 @@ def trainLyricModels(lyricDirs, lyricsOrGrammar, test=False):
     This function is done for you.
     """
     model = LanguageModel()
-    grammarModel = LanguageModel()
 
     for ldir in lyricDirs:
         lyrics = prepData(loadLyrics(ldir))
         model.updateTrainedData(lyrics)
 
-        grammarBool = False
-        grammarModel.updateTrainedData(lyrics, grammarBool)
-        print(model)
-
-    if not lyricsOrGrammar:
-        return model
-    else:
-        return grammarModel
+    return model
 
 def trainMusicModels(musicDirs):
     """
@@ -112,7 +104,7 @@ def trainMusicModels(musicDirs):
 
     return model
 
-def runLyricsGenerator(models, gModels):
+def runLyricsGenerator(models):
     """
     Requires: models is a list of a trained nGramModel child class objects
     Modifies: nothing
@@ -123,31 +115,40 @@ def runLyricsGenerator(models, gModels):
     verseTwo = []
     chorus = []
 
-    for x in range(4):
-        sentence = generateTokenSentence(models, gModels, 7)
-        verseOne.append(sentence)
-        if x == 1:
-            rhyme = findRhyme(models, sentence[-1])
-        if x == 3:
-            sentence[-1] = rhyme
+    verseOneCount = 0
+    while verseOneCount < 4:
+        sentence = generateTokenSentence(models, 7)
+        if spacyCheck(listToString(sentence)):
+            verseOne.append(sentence)
+            if verseOneCount == 1:
+                rhyme = findRhyme(models, sentence[-1])
+            if verseOneCount == 3:
+                sentence[-1] = rhyme
+            verseOneCount += 1
 
-    for x in range(4):
-        sentence = generateTokenSentence(models, gModels, 7)
-        verseTwo.append(sentence)
-        if x == 1:
-            rhyme = findRhyme(models, sentence[-1])
-        if x == 3:
-            sentence[-1] = rhyme
+    verseTwoCount = 0
+    while verseTwoCount < 4:
+        sentence = generateTokenSentence(models, 7)
+        if spacyCheck(listToString(sentence)):
+            verseTwo.append(sentence)
+            if verseTwoCount == 1:
+                rhyme = findRhyme(models, sentence[-1])
+            if verseTwoCount == 3:
+                sentence[-1] = rhyme
+            verseTwoCount += 1
 
-    for x in range(3):
-        sentence = generateTokenSentence(models, gModels, 7)
-        chorus.append(sentence)
-        if x == 1:
-            repeat = sentence
-        if x == 0:
-            rhyme = findRhyme(models, sentence[-1])
-        if x == 2:
-            sentence[-1] = rhyme
+    chorusCount = 0
+    while chorusCount < 3:
+        sentence = generateTokenSentence(models, 7)
+        if spacyCheck(listToString(sentence)):
+            chorus.append(sentence)
+            if chorusCount == 1:
+                repeat = sentence
+            if chorusCount == 0:
+                rhyme = findRhyme(models, sentence[-1])
+            if chorusCount == 2:
+                sentence[-1] = rhyme
+            chorusCount += 1
     chorus.append(repeat)
 
     printSongLyrics(verseOne, verseTwo, chorus)
@@ -182,7 +183,7 @@ def runMusicGenerator(models, songName):
 # Begin Core >> FOR CORE IMPLEMENTION, DO NOT EDIT OUTSIDE OF THIS SECTION <<
 ###############################################################################
 
-def generateTokenSentence(model, gModel, desiredLength):
+def generateTokenSentence(model, desiredLength):
     """
     Requires: model is a single trained languageModel object.
               desiredLength is the desired length of the sentence.
@@ -196,31 +197,33 @@ def generateTokenSentence(model, gModel, desiredLength):
     """
     sentence = []
     nextWord = model.getNextToken(sentence)
-    nextGrammar = gModel.getNextToken(sentence)
     count = 0
     desiredSyllableCount = 7
-
-    nlp = spacy.load('en_core_web_sm')
+    currentWordSyllable = 0
 
     while (count < desiredSyllableCount):
-            #while((not sentenceTooLong(desiredLength, len(sentence))) and (nextWord != "$:::$")):
+        count += currentWordSyllable
         if nextWord == "$:::$":
             nextWord = model.getNextToken(sentence)
         elif nextWord == "^::^" or nextWord == "^:::^":
             nextWord = model.getNextToken(sentence)
         else:
             sentence.append(nextWord)
-            count += syllables(nextWord)
+            currentWordSyllable = syllables(nextWord)
+            print (currentWordSyllable)
             nextWord = model.getNextToken(sentence)
-            '''
-            doc = nlp(nextWord)
-            if doc.pos_ == nextGrammar:
-                sentence.append(nextWord)
-                count += syllables(nextWord)
-                nextWord = model.getNextToken(sentence)
-                nextGrammar = gModel.getNextToken(sentence)
-            '''
+
+    print (count)
     return sentence
+
+
+def spacyCheck(sentence):
+    nlp = spacy.load('en_core_web_sm')
+    doc = nlp(sentence)
+
+    if doc[-1].pos_ == "DET" or doc[-1].pos_ == "ADP" or doc[-1].pos_ == "AUX" or doc[-1].pos_ == "INTJ" or doc[-1].pos_ == "CONJ" or doc[-1].pos_ == "CCONJ" or doc[-1].pos_ == "SCONJ" or doc[-1].pos_ == "PART":
+        return False
+    return True
 
 def listToString(list):
     sentence = ""
@@ -281,7 +284,7 @@ def findRhyme(model, word):
 ###############################################################################
 
 PROMPT = [
-    'Generate song lyrics by Migos',
+    'Generate xmas song lyrics',
     'Generate a song using data from Nintendo Gamecube',
     'Quit the music generator'
 ]
@@ -308,13 +311,10 @@ def main():
         if userInput == 1:
             if not lyricsTrained:
                 print('Starting lyrics generator...')
-                lyricsOrGrammar = False
-                lyricsModel = trainLyricModels(LYRICSDIRS, lyricsOrGrammar)
+                lyricsModel = trainLyricModels(LYRICSDIRS)
                 lyricsTrained = True
-                lyricsOrGrammar = True
-                grammarModel = trainLyricModels(LYRICSDIRS, lyricsOrGrammar)
 
-            runLyricsGenerator(lyricsModel, grammarModel)
+            runLyricsGenerator(lyricsModel)
 
         elif userInput == 2:
             if not musicTrained:
