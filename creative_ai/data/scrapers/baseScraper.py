@@ -3,8 +3,8 @@
 import os
 import subprocess
 import sys
-import httplib
-import urllib2
+import http.client
+import urllib
 import codecs
 import re
 from time import sleep
@@ -41,25 +41,14 @@ class BaseScraper(object):
         DO NOT alter this delay.
         """
         relativeUrl = relativeUrl.encode('utf-8')
-        conn = httplib.HTTPConnection(host=self.hostUrl, timeout=30)
+        conn = http.client.HTTPConnection(host=self.hostUrl, timeout=30)
         if relativeUrl[0] != "/":
-            relativeUrl = "/" + relativeUrl
+            relativeUrl = "/" + relativeUrl.decode('utf-8')
         conn.request("GET", relativeUrl)
         html = conn.getresponse().read()
         html = html.decode("utf-8", errors="ignore")
 
         sleep(self.delay)
         return html
-
-    def updateProgressBar(self, progress, title, num):
-        """
-        Updates the visual progress bar, just for kicks.
-        """
-        progress += 1
-        hashes = ("#" * ((progress * 50) / num)).ljust(50)
-        progressBar = "\r[ " + hashes + " ] Operation in progress..."
-        sys.stdout.write(progressBar)
-        sys.stdout.flush()
-        return progress
 
 

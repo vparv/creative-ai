@@ -1,3 +1,4 @@
+import spacy
 import random
 from creative_ai.data.dataLoader import prepData
 from creative_ai.models.unigramModel import UnigramModel
@@ -45,7 +46,7 @@ class LanguageModel():
 
         return output
 
-    def updateTrainedData(self, text, prepped=True):
+    def updateTrainedData(self, text, prepped=True, grammar=True):
         """
         Requires: text is a 2D list of strings
         Modifies: self (this instance of the LanguageModel object)
@@ -55,6 +56,27 @@ class LanguageModel():
 
         This function is done for you.
         """
+
+        if(not grammar):
+            for line in text:
+                for word in range(len(line)):
+                    if line[word] == "$:::$" or line[word] == "^::^" or line[word] == "^:::^":
+                        line.remove(word)
+            #grammarList = []
+            nlp = spacy.load('en_core_web_sm')
+            for line in text:
+                for word in line:
+                    doc = nlp(word)
+                    word = doc.pos_
+            '''
+            for line in text:
+                lineCount = 0
+                for word in range(len(line)):
+                    doc = nlp(word)
+                    grammar[lineCount][word] = doc.pos_
+                lineCount += 1
+            '''
+
 
         if (not prepped):
             text = prepData(text)
