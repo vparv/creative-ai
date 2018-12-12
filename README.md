@@ -1,23 +1,19 @@
-# Creative AI Project
+Sicko Code
+- Srikar Ayyalasomayajula; srikayy
+- Kush Patel; kushptl
+- Vineet Parvathala; vparv
+- Tanvi Jaikamal; jtanvi
 
-Welcome to the Creative AI Repository! **Creative AI** is about using artificial intelligence to automatically generate lyrics and music using datasets of your choice.
+All Downloaded Python Libraries used:
+* tqdm
+* click
+* spacy
+* tweepy
 
-If you have questions, please check here:
+...
 
-- [Link to generated lyrics demo](https://youtu.be/Z46LvHwgygs?list=PL2BYDiR6uDOJzYCJ7QuuQz-hWvQeYN5Nx)
+Our creative ai application reads from an inventory of preloaded songs and generates a custom Christmas song based on language patterns found in the loaded songs. It then outputs the song as a tweet.
+We reused sentences in our song to create a chorus with repeated lines, as well as implementing a functions that standardizes the number of syllables per line. Additionally, we implemented a function to rhyme certain lines by comparing the last few letters of the last word in those lines.
+We output our song to a twitter account and allow the user to input a name that shows up as who the song is addressed to.
 
-- [Link to generated music demo](https://youtu.be/RrHrRqZ3pUM?list=PL2BYDiR6uDOJzYCJ7QuuQz-hWvQeYN5Nx)
-
-- [Link to specification](https://github.com/eecs183/creative-ai/wiki)
-
-Here are a few notes to get you started:
-
-* Don't touch the \_\_init\_\_.py files. These are necessary to your project.
-
-* Things will be easier if you read the spec first and follow the given function order.
-
-* Make sure you have `pip` installed so you download pysynth.
-
-* Remember to replace this file with your finished Final Project description.
-
-Good luck on the project!
+Enjoy!
