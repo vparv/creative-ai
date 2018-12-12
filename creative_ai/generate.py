@@ -336,6 +336,7 @@ def main():
                 lyricsTrained = True
 
             name = input("For whom is this Christmas song addressed? ")
+            name += "!"
             twitterString = runLyricsGenerator(lyricsModel, name)
 
 
