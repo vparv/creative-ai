@@ -14,8 +14,8 @@ from creative_ai.models.languageModel import LanguageModel
 
 # FIXME Add your team name
 TEAM = 'SICKO CODE'
-LYRICSDIRS = ['xmas']
-TESTLYRICSDIRS = ['the_beatles_test']
+LYRICSDIRS = ['the_beatles_test']
+TESTLYRICSDIRS = ['beatles']
 MUSICDIRS = ['gamecube']
 WAVDIR = 'wav/'
 
