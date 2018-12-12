@@ -4,6 +4,7 @@ sys.dont_write_bytecode = True # Suppress .pyc files
 
 import random
 import spacy
+import tweepy
 
 from creative_ai.pysynth import pysynth
 from creative_ai.utils.menu import Menu
@@ -17,6 +18,9 @@ LYRICSDIRS = ['xmas']
 TESTLYRICSDIRS = ['the_beatles_test']
 MUSICDIRS = ['gamecube']
 WAVDIR = 'wav/'
+
+global twitterString
+twitterString = ""
 
 def output_models(val, output_fn = None):
     """
@@ -104,7 +108,7 @@ def trainMusicModels(musicDirs):
 
     return model
 
-def runLyricsGenerator(models):
+def runLyricsGenerator(models, name):
     """
     Requires: models is a list of a trained nGramModel child class objects
     Modifies: nothing
@@ -116,6 +120,8 @@ def runLyricsGenerator(models):
     chorus = []
 
     verseOneCount = 0
+    firstLine = ["Merry", "Christmas", name]
+    verseOne.append(firstLine)
     while verseOneCount < 4:
         sentence = generateTokenSentence(models, 7)
         if spacyCheck(listToString(sentence)):
@@ -137,6 +143,7 @@ def runLyricsGenerator(models):
                 sentence[-1] = rhyme
             verseTwoCount += 1
 
+    twitterString = ""
     chorusCount = 0
     while chorusCount < 3:
         sentence = generateTokenSentence(models, 7)
@@ -152,6 +159,21 @@ def runLyricsGenerator(models):
     chorus.append(repeat)
 
     printSongLyrics(verseOne, verseTwo, chorus)
+
+    for list in verseOne:
+        twitterString += listToString(list) + "\n"
+    twitterString += "\n"
+    for list in chorus:
+        twitterString += listToString(list) + "\n"
+
+    charCount = 0
+    for word in twitterString:
+        charCount += len(word)
+    if charCount > 280:
+        twitterString = "Please try again: name too long"
+
+    print (twitterString)
+    return twitterString
 
 def runMusicGenerator(models, songName):
     """
@@ -204,16 +226,15 @@ def generateTokenSentence(model, desiredLength):
     while (count < desiredSyllableCount):
         count += currentWordSyllable
         if nextWord == "$:::$":
+            sentence.append("")
             nextWord = model.getNextToken(sentence)
         elif nextWord == "^::^" or nextWord == "^:::^":
             nextWord = model.getNextToken(sentence)
         else:
             sentence.append(nextWord)
             currentWordSyllable = syllables(nextWord)
-            print (currentWordSyllable)
             nextWord = model.getNextToken(sentence)
 
-    print (count)
     return sentence
 
 
@@ -228,7 +249,7 @@ def spacyCheck(sentence):
 def listToString(list):
     sentence = ""
     for i in range(len(list)):
-        sentence += list[i]
+        sentence += list[i] + " "
     return sentence
 
 def syllables(word):
@@ -314,7 +335,25 @@ def main():
                 lyricsModel = trainLyricModels(LYRICSDIRS)
                 lyricsTrained = True
 
-            runLyricsGenerator(lyricsModel)
+            name = input("For whom is this Christmas song addressed? ")
+            twitterString = runLyricsGenerator(lyricsModel, name)
+
+
+            consumer_key = 'QyX2wwasqJsQKRKXYiiKxZqBD'
+            consumer_secret = 'rKlMSyPpsXT6tAl6VQxzlyq6lIbpl8QTgy7lu7uXFw4xljNXUR'
+            access_token = '837827575124721664-4NCF1WTrdHPUKAS4Th4pb0vwIWLv5n9'
+            access_token_secret = 'wTwle1sldbgcjqevgD8rwYCWNEkLDi6QVxd3qYS9qSAse'
+
+            auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+            auth.set_access_token(access_token, access_token_secret)
+            api = tweepy.API(auth)
+
+            user = api.me()
+            print(user.name)
+            print(user.location)
+            #print(twitterString)
+            api.update_status(twitterString)
+            print("Sicko Code 183 wishes you a Merry Christmas")
 
         elif userInput == 2:
             if not musicTrained:
@@ -329,6 +368,8 @@ def main():
         elif userInput == 3:
             print('Thank you for using the {} music generator!'.format(TEAM))
             sys.exit()
+
+
 
 # This is how python tells if the file is being run as main
 if __name__ == '__main__':

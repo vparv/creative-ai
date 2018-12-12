@@ -10,5 +10,6 @@ setup(
         'tqdm',
         'click'
         'spacy'
+        'tweepy'
     ]
 )
